@@ -8,15 +8,17 @@
 
 import SpriteKit
 import GameplayKit
+import CoreMotion
 
 class GameScene: SKScene {
     
     private var comet : SKSpriteNode?
-    private var spinnyNode : SKShapeNode?
+    var motionManager = CMMotionManager()
+    var destX : CGFloat = 0.0
+    var timer : Timer = Timer()
     
     override func didMove(to view: SKView) {
-        
-        // Get label node from scene and store it for use later
+
         self.comet = self.childNode(withName: "//woosh") as? SKSpriteNode
         if let comet = self.comet {
             comet.alpha = 0.0
@@ -26,49 +28,40 @@ class GameScene: SKScene {
             }
         }
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
-        
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
+        if motionManager.isAccelerometerAvailable {
+            print("Tem acelerometro")
+            motionManager.accelerometerUpdateInterval = 0.01
+            let handler:CMAccelerometerHandler = {(data: CMAccelerometerData?, error: Error?) -> Void in
+                let accelerationz = data?.acceleration.z
+                let currentX = self.comet?.position.x
+                self.destX = currentX ?? 0 + (CGFloat(accelerationz ?? 0) * 500)
+            }
+            motionManager.startAccelerometerUpdates(to: OperationQueue.main, withHandler: handler)
             
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
         }
+        
     }
     
+    override func update(_ currentTime: TimeInterval) {
+        let action = SKAction.moveBy(x: destX, y: 0, duration: 1.0)
+        if let cometNode = self.comet{
+            print("Vai andar")
+            cometNode.run(action)
+        }
+        
+    }
+
     
     func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
     }
     
     func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.comet {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
         
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
@@ -83,10 +76,5 @@ class GameScene: SKScene {
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
     }
 }
