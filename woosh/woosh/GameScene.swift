@@ -12,14 +12,13 @@ import CoreMotion
 
 class GameScene: SKScene {
     
-    private var comet : SKSpriteNode?
+    var comet : SKSpriteNode?
     var motionManager = CMMotionManager()
     var destX : CGFloat = 0.0
-    var timer : Timer = Timer()
     
     override func didMove(to view: SKView) {
 
-        self.comet = self.childNode(withName: "//woosh") as? SKSpriteNode
+        self.comet = self.childNode(withName: "woosh") as? SKSpriteNode
         if let comet = self.comet {
             comet.alpha = 0.0
             comet.run(SKAction.fadeIn(withDuration: 2.0))
@@ -30,25 +29,24 @@ class GameScene: SKScene {
         
         if motionManager.isAccelerometerAvailable {
             print("Tem acelerometro")
-            motionManager.accelerometerUpdateInterval = 0.01
-            let handler:CMAccelerometerHandler = {(data: CMAccelerometerData?, error: Error?) -> Void in
-                let accelerationz = data?.acceleration.z
-                let currentX = self.comet?.position.x
-                self.destX = currentX ?? 0 + (CGFloat(accelerationz ?? 0) * 500)
-            }
-            motionManager.startAccelerometerUpdates(to: OperationQueue.main, withHandler: handler)
             
+            motionManager.accelerometerUpdateInterval = 0.1
+            motionManager.startAccelerometerUpdates(to: OperationQueue.main) { (data, error) in
+                if let accelerometerData = data{
+                    let accelerationx = accelerometerData.acceleration.x
+                    //let accelerationy = accelerometerData.acceleration.y
+                    let currentX = self.comet?.position.x
+                    self.destX =  currentX! + CGFloat(accelerationx * 500)
+//                    self.physicsWorld.gravity = CGVector(CGFloat(accelerationx) * 10, CGFloat(accelerationy) * 10)
+                }
+            }
         }
         
     }
     
     override func update(_ currentTime: TimeInterval) {
-        let action = SKAction.moveBy(x: destX, y: 0, duration: 1.0)
-        if let cometNode = self.comet{
-            print("Vai andar")
-            cometNode.run(action)
-        }
-        
+        let action = SKAction.moveTo(x: self.destX, duration: 1)
+        self.comet?.run(action)
     }
 
     
