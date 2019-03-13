@@ -13,20 +13,54 @@ import CoreMotion
 class GameScene: SKScene {
     
     var comet : SKSpriteNode?
+    //var sky : SKSpriteNode?
     var motionManager = CMMotionManager()
     var destX : CGFloat = 0.0
     
     override func didMove(to view: SKView) {
 
+        createSky()
+        createComet()
+        moveComet()
+        
+    }
+    
+    func createSky(){
+        for i in 0...3{
+            if let image = UIImage(named: "skyTest-17.png"){
+                let skyTexture = SKTexture(image: image)
+                let skyNode = SKSpriteNode(texture: skyTexture)
+                skyNode.name = "sky"
+                skyNode.size = CGSize(width: (self.scene?.size.width)!, height: (self.scene?.size.height)!)
+                skyNode.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+                skyNode.position = CGPoint(x: 0, y:  CGFloat(i) * skyNode.size.height)
+                self.addChild(skyNode)
+            }
+        }
+    }
+    
+    func moveSky(){
+        self.enumerateChildNodes(withName: "sky") { (node, error) in
+            node.position.y -= 2
+            if node.position.y < -((self.scene?.size.height)!){
+                node.position.y += (self.scene?.size.height)! * 3
+            }
+        }
+    }
+    
+    func createComet(){
         self.comet = self.childNode(withName: "woosh") as? SKSpriteNode
         if let comet = self.comet {
             comet.alpha = 0.0
+            comet.zPosition = 2.0
             comet.run(SKAction.fadeIn(withDuration: 2.0))
             if let cometImage = UIImage(named: "wooshComet-12.png"){
                 comet.texture = SKTexture(image: cometImage)
             }
         }
-        
+    }
+    
+    func moveComet(){
         if motionManager.isAccelerometerAvailable {
             print("Tem acelerometro")
             
@@ -34,19 +68,17 @@ class GameScene: SKScene {
             motionManager.startAccelerometerUpdates(to: OperationQueue.main) { (data, error) in
                 if let accelerometerData = data{
                     let accelerationx = accelerometerData.acceleration.x
-                    //let accelerationy = accelerometerData.acceleration.y
                     let currentX = self.comet?.position.x
                     self.destX =  currentX! + CGFloat(accelerationx * 500)
-//                    self.physicsWorld.gravity = CGVector(CGFloat(accelerationx) * 10, CGFloat(accelerationy) * 10)
                 }
             }
         }
-        
     }
     
     override func update(_ currentTime: TimeInterval) {
         let action = SKAction.moveTo(x: self.destX, duration: 1)
         self.comet?.run(action)
+        moveSky()
     }
 
     
