@@ -18,10 +18,10 @@ class GameScene: SKScene {
     var destX : CGFloat = 0.0
     
     override func didMove(to view: SKView) {
-
         createSky()
         createComet()
         moveComet()
+        createPlanets()
         
     }
     
@@ -73,6 +73,49 @@ class GameScene: SKScene {
                 }
             }
         }
+    }
+    
+    func createPlanets(){
+        
+//        Primeira ideia: distancia entre planetas
+//        let randomDistanceHeight = 0.0
+//        let randomDistanceWidth = 0.0
+        
+        // Create images for textures
+        var bluePlanetImage = UIImage()
+        var redPlanetImage = UIImage()
+        var greenPlanetImage = UIImage()
+        
+        if let image = UIImage(named: "planeta1-18.png"){
+            bluePlanetImage = image
+        }
+        if let image = UIImage(named: "planeta2-19.png"){
+            redPlanetImage = image
+        }
+        if let image = UIImage(named: "planeta3-20.png"){
+            greenPlanetImage = image
+        }
+        
+        // Random textures
+        let arrayPlanetImages = [bluePlanetImage, redPlanetImage, greenPlanetImage]
+        let planetRandomTexture = SKTexture(image: arrayPlanetImages.randomElement() ?? bluePlanetImage)
+        
+        // Random position
+        let maxLimit = self.size.width/2 - (bluePlanetImage.size.width)/4
+        let minLimit = -(self.size.width/2 + (bluePlanetImage.size.width)/4)
+        let randomX = CGFloat.random(in: minLimit ... maxLimit)
+        let randomPosition = CGPoint(x: randomX, y:  5)
+        
+        // Create planet node
+        let planet  = SKSpriteNode(texture: planetRandomTexture)
+        planet.name = "planet"
+        planet.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        planet.size = CGSize(width: (bluePlanetImage.size.width)/4, height: (bluePlanetImage.size.height)/4)
+        planet.position = randomPosition
+        planet.zPosition = 2.0
+        planet.run(SKAction.fadeIn(withDuration: 2.0))
+        self.addChild(planet)
+
     }
     
     override func update(_ currentTime: TimeInterval) {
