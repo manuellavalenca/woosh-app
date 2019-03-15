@@ -22,7 +22,7 @@ class GameScene: SKScene {
         createSky()
         createComet()
         moveComet()
-        createPlanets()
+        createPlanetsTimer()
         
     }
     
@@ -76,7 +76,7 @@ class GameScene: SKScene {
         }
     }
     
-    func createPlanets(){
+    func createPlanetNode(){
         
         // Create images for textures
         var bluePlanetImage = UIImage()
@@ -98,10 +98,10 @@ class GameScene: SKScene {
         let planetRandomTexture = SKTexture(image: arrayPlanetImages.randomElement() ?? bluePlanetImage)
         
         // Random position
-        let maxLimit = self.size.width/2 - (bluePlanetImage.size.width)/4
-        let minLimit = -(self.size.width/2 + (bluePlanetImage.size.width)/4)
+        let maxLimit = self.size.width/2 - (bluePlanetImage.size.width)/2
+        let minLimit = -(self.size.width/2 + (bluePlanetImage.size.width)/2)
         let randomX = CGFloat.random(in: minLimit ... maxLimit)
-        let randomPosition = CGPoint(x: randomX, y:  self.size.height/2)
+        let randomPosition = CGPoint(x: randomX, y:  self.size.height/2 + (bluePlanetImage.size.width)/4)
         
         // Create planet node
         let planet  = SKSpriteNode(texture: planetRandomTexture)
@@ -114,8 +114,18 @@ class GameScene: SKScene {
         self.addChild(planet)
         
         // Move planet
-        let action = SKAction.moveTo(y: -self.size.height, duration: 4.5)
+        let action = SKAction.moveTo(y: -self.size.height, duration: 5.5)
         planet.run(action)
+    }
+    
+    func createPlanetsTimer(){
+        let wait = SKAction.wait(forDuration: 2, withRange: 3)
+        let spawn = SKAction.run {
+            self.createPlanetNode()
+        }
+        
+        let sequence = SKAction.sequence([wait, spawn])
+        self.run(SKAction.repeatForever(sequence))
     }
     
     override func update(_ currentTime: TimeInterval) {
