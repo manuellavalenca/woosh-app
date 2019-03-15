@@ -128,10 +128,19 @@ class GameScene: SKScene {
         self.run(SKAction.repeatForever(sequence))
     }
     
+    func deletePlanets(){
+        self.enumerateChildNodes(withName: "planet") { (node, error) in
+            if node.position.y < -((self.scene?.size.height)!/2){
+                node.removeFromParent()
+            }
+        }
+    }
+    
     override func update(_ currentTime: TimeInterval) {
         let action = SKAction.moveTo(x: self.destX, duration: 1)
         self.comet?.run(action)
         moveSky()
+        deletePlanets()
     }
 
     
