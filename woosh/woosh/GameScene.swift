@@ -12,10 +12,11 @@ import CoreMotion
 
 class GameScene: SKScene {
     
+    // SpriteKit
     var comet : SKSpriteNode?
-    //var sky : SKSpriteNode?
-    var motionManager = CMMotionManager()
     var destX : CGFloat = 0.0
+    
+    var motionManager = CMMotionManager()
     
     override func didMove(to view: SKView) {
         createSky()
@@ -77,10 +78,6 @@ class GameScene: SKScene {
     
     func createPlanets(){
         
-//        Primeira ideia: distancia entre planetas
-//        let randomDistanceHeight = 0.0
-//        let randomDistanceWidth = 0.0
-        
         // Create images for textures
         var bluePlanetImage = UIImage()
         var redPlanetImage = UIImage()
@@ -104,7 +101,7 @@ class GameScene: SKScene {
         let maxLimit = self.size.width/2 - (bluePlanetImage.size.width)/4
         let minLimit = -(self.size.width/2 + (bluePlanetImage.size.width)/4)
         let randomX = CGFloat.random(in: minLimit ... maxLimit)
-        let randomPosition = CGPoint(x: randomX, y:  5)
+        let randomPosition = CGPoint(x: randomX, y:  self.size.height/2)
         
         // Create planet node
         let planet  = SKSpriteNode(texture: planetRandomTexture)
@@ -115,7 +112,10 @@ class GameScene: SKScene {
         planet.zPosition = 2.0
         planet.run(SKAction.fadeIn(withDuration: 2.0))
         self.addChild(planet)
-
+        
+        // Move planet
+        let action = SKAction.moveTo(y: -self.size.height, duration: 4.5)
+        planet.run(action)
     }
     
     override func update(_ currentTime: TimeInterval) {
