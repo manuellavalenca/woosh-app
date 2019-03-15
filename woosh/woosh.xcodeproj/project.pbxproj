@@ -11,6 +11,7 @@
 		49304E11223A887800108787 /* planeta3-20.png in Resources */ = {isa = PBXBuildFile; fileRef = 49304E0E223A887800108787 /* planeta3-20.png */; };
 		49304E12223A887800108787 /* planeta1-18.png in Resources */ = {isa = PBXBuildFile; fileRef = 49304E0F223A887800108787 /* planeta1-18.png */; };
 		49304E13223A887800108787 /* planeta2-19.png in Resources */ = {isa = PBXBuildFile; fileRef = 49304E10223A887800108787 /* planeta2-19.png */; };
+		49304E17223BF55400108787 /* EndGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49304E16223BF55300108787 /* EndGameViewController.swift */; };
 		49D3478B2236A3BD00DE0E53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3478A2236A3BD00DE0E53 /* AppDelegate.swift */; };
 		49D3478D2236A3BD00DE0E53 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 49D3478C2236A3BD00DE0E53 /* GameScene.sks */; };
 		49D3478F2236A3BD00DE0E53 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 49D3478E2236A3BD00DE0E53 /* Actions.sks */; };
@@ -48,6 +49,7 @@
 		49304E0E223A887800108787 /* planeta3-20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "planeta3-20.png"; sourceTree = "<group>"; };
 		49304E0F223A887800108787 /* planeta1-18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "planeta1-18.png"; sourceTree = "<group>"; };
 		49304E10223A887800108787 /* planeta2-19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "planeta2-19.png"; sourceTree = "<group>"; };
+		49304E16223BF55300108787 /* EndGameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndGameViewController.swift; sourceTree = "<group>"; };
 		49D347872236A3BD00DE0E53 /* woosh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = woosh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D3478A2236A3BD00DE0E53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		49D3478C2236A3BD00DE0E53 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				49304E0C22393AC700108787 /* skyTest-17.png */,
 				49D347BE2236A52900DE0E53 /* wooshComet-12.png */,
 				49D347C22236AFA900DE0E53 /* cometRight-12.png */,
+				49304E16223BF55300108787 /* EndGameViewController.swift */,
 				49D347C02236AE7900DE0E53 /* cometTail-13.png */,
 				49304E0F223A887800108787 /* planeta1-18.png */,
 				49304E10223A887800108787 /* planeta2-19.png */,
@@ -297,6 +300,7 @@
 			files = (
 				49D347912236A3BD00DE0E53 /* GameScene.swift in Sources */,
 				49D347932236A3BD00DE0E53 /* GameViewController.swift in Sources */,
+				49304E17223BF55400108787 /* EndGameViewController.swift in Sources */,
 				49D3478B2236A3BD00DE0E53 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

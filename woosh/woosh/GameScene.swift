@@ -10,20 +10,24 @@ import SpriteKit
 import GameplayKit
 import CoreMotion
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // SpriteKit
-    var comet : SKSpriteNode?
+    var cometNode = SKSpriteNode()
     var destX : CGFloat = 0.0
+    let planetBitCategory  : UInt32 = 0b01
+    let cometBitCategory : UInt32 = 0b01
     
     var motionManager = CMMotionManager()
     
     override func didMove(to view: SKView) {
+        
+        self.physicsWorld.contactDelegate = self
+        
         createSky()
         createComet()
         moveComet()
         createPlanetsTimer()
-        
     }
     
     func createSky(){
@@ -50,30 +54,51 @@ class GameScene: SKScene {
     }
     
     func createComet(){
-        self.comet = self.childNode(withName: "woosh") as? SKSpriteNode
-        if let comet = self.comet {
-            comet.alpha = 0.0
-            comet.zPosition = 2.0
-            comet.run(SKAction.fadeIn(withDuration: 2.0))
+        
+            cometNode.position = CGPoint(x: 0, y: -20)
+            cometNode.zPosition = 2.0
             if let cometImage = UIImage(named: "wooshComet-12.png"){
-                comet.texture = SKTexture(image: cometImage)
+                print("Texture created")
+                cometNode.texture = SKTexture(image: cometImage)
+                cometNode.size = CGSize(width: cometImage.size.width/4, height: cometImage.size.height/4)
+                cometNode.physicsBody = SKPhysicsBody(texture: SKTexture(image: cometImage), size: CGSize(width: cometImage.size.width/4, height: cometImage.size.height/4))
+                cometNode.physicsBody?.affectedByGravity = false
             }
-        }
+            
+            cometNode.physicsBody?.categoryBitMask = cometBitCategory
+            cometNode.physicsBody?.collisionBitMask = planetBitCategory
+            //comet.physicsBody?.collisionBitMask = cometBitCategory
+            
+            self.addChild(cometNode)
+            
+            if motionManager.isAccelerometerAvailable {
+                print("Tem acelerometro")
+                
+                motionManager.accelerometerUpdateInterval = 0.1
+                motionManager.startAccelerometerUpdates(to: OperationQueue.main) { (data, error) in
+                    if let accelerometerData = data{
+                        let accelerationx = accelerometerData.acceleration.x
+                        let currentX = self.cometNode.position.x
+                        self.destX =  currentX + CGFloat(accelerationx * 500)
+                    }
+                }
+            }
+        
     }
     
     func moveComet(){
-        if motionManager.isAccelerometerAvailable {
-            print("Tem acelerometro")
-            
-            motionManager.accelerometerUpdateInterval = 0.1
-            motionManager.startAccelerometerUpdates(to: OperationQueue.main) { (data, error) in
-                if let accelerometerData = data{
-                    let accelerationx = accelerometerData.acceleration.x
-                    let currentX = self.comet?.position.x
-                    self.destX =  currentX! + CGFloat(accelerationx * 500)
-                }
-            }
-        }
+//        if motionManager.isAccelerometerAvailable {
+//            print("Tem acelerometro")
+//
+//            motionManager.accelerometerUpdateInterval = 0.1
+//            motionManager.startAccelerometerUpdates(to: OperationQueue.main) { (data, error) in
+//                if let accelerometerData = data{
+//                    let accelerationx = accelerometerData.acceleration.x
+//                    let currentX = self.comet?.position.x
+//                    self.destX =  currentX! + CGFloat(accelerationx * 500)
+//                }
+//            }
+//        }
     }
     
     func createPlanetNode(){
@@ -104,12 +129,19 @@ class GameScene: SKScene {
         let randomPosition = CGPoint(x: randomX, y:  self.size.height/2 + (bluePlanetImage.size.width)/4)
         
         // Create planet node
-        let planet  = SKSpriteNode(texture: planetRandomTexture)
+        let planet  = SKSpriteNode()
         planet.name = "planet"
-        planet.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         planet.size = CGSize(width: (bluePlanetImage.size.width)/4, height: (bluePlanetImage.size.height)/4)
         planet.position = randomPosition
         planet.zPosition = 2.0
+        planet.texture = planetRandomTexture
+        
+        planet.physicsBody = SKPhysicsBody(texture: planetRandomTexture, size: CGSize(width: (bluePlanetImage.size.width)/4, height: (bluePlanetImage.size.height)/4))
+        planet.physicsBody?.categoryBitMask = planetBitCategory
+        planet.physicsBody?.collisionBitMask = cometBitCategory
+        planet.physicsBody?.contactTestBitMask = planetBitCategory
+        //planet.physicsBody?.restitution = 0.75
+        
         planet.run(SKAction.fadeIn(withDuration: 2.0))
         self.addChild(planet)
         
@@ -130,15 +162,22 @@ class GameScene: SKScene {
     
     func deletePlanets(){
         self.enumerateChildNodes(withName: "planet") { (node, error) in
-            if node.position.y < -((self.scene?.size.height)!/2){
+            if node.position.y < -((self.scene?.size.height)!/2 + node.frame.size.height){
                 node.removeFromParent()
             }
         }
     }
     
+    func didBegin(_ contact: SKPhysicsContact) {
+        print("OA A COLISAO")
+        self.view!.window!.rootViewController!.performSegue(withIdentifier: "endGameSegue", sender: self)
+    }
+    
+    
+    
     override func update(_ currentTime: TimeInterval) {
         let action = SKAction.moveTo(x: self.destX, duration: 1)
-        self.comet?.run(action)
+        self.cometNode.run(action)
         moveSky()
         deletePlanets()
     }
