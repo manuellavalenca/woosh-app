@@ -4,7 +4,7 @@
 //
 //  Created by Manuella Valença on 11/03/19.
 //  Copyright © 2019 Manuella Valença. All rights reserved.
-//
+//  Version 1.0
 
 import SpriteKit
 import GameplayKit
