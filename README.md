@@ -3,7 +3,7 @@
 	</p> 
 
 # Woosh iOS App
-Woosh is a iOS App based on a [playground experience](https://github.com/manuellavalenca/woosh) submitted for the WWDC 2019 Scholarships.
+Woosh is an iOS App based on a [playground experience](https://github.com/manuellavalenca/woosh) submitted for the WWDC 2019 Scholarships.
 
 Try to avoid planets crashing by moving the device's accelerometer. 
 
