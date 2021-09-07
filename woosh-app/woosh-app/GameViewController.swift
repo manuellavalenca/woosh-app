@@ -3,7 +3,7 @@
 //  woosh-app
 //
 //  Created by Manuella Valença on 07/09/21.
-//
+//  Version 2.0
 
 import UIKit
 import SpriteKit
