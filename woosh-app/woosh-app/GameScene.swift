@@ -143,6 +143,7 @@ public class GameScene: SKScene, SKPhysicsContactDelegate {
         wooshLogo.texture = SKTexture(image: UIImage(named: "wooshName-28.png")!)
         wooshLogo.size = CGSize(width: 800, height: 453)
         wooshLogo.position = CGPoint(x: 0, y: (self.scene?.size.height)!/5)
+        wooshLogo.zPosition = 1
         wooshLogo.alpha = 1
         self.addChild(wooshLogo)
         
@@ -150,6 +151,7 @@ public class GameScene: SKScene, SKPhysicsContactDelegate {
         backgroundNode.size = CGSize(width: 215, height: 112)
         backgroundNode.position = CGPoint(x: 0, y: -(self.scene?.size.height)!/4)
         backgroundNode.alpha = 1
+        backgroundNode.zPosition = 1
         self.addChild(backgroundNode)
         
         let wait = SKAction.wait(forDuration: 0.25)
@@ -171,6 +173,7 @@ public class GameScene: SKScene, SKPhysicsContactDelegate {
         self.startButton.size = CGSize(width: 200, height: 77)
         self.startButton.position = CGPoint(x: 0, y: -(self.scene?.size.height)!/4)
         self.startButton.alpha = 1
+        self.startButton.zPosition = 2
         self.addChild(self.startButton)
         
         let imageButton1 = SKAction.run {
