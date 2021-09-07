@@ -322,16 +322,6 @@ public class GameScene: SKScene, SKPhysicsContactDelegate {
         let randomX = CGFloat.random(in: minLimit ... maxLimit)
         let randomPosition = CGPoint(x: randomX, y:  self.size.height/2 + (bluePlanetImage.size.width)/4)
         
-        // Random position between possibilities
-//        let position1 = -(self.size.width/2)
-//        let position2 = -(self.size.width/2) + (bluePlanetImage.size.width)/2
-//        let position3 = (self.size.width)/2 - (bluePlanetImage.size.width)/2
-//        let position4 = (self.size.width)/2
-//        let position5 = -(self.size.width/2) + 2*(bluePlanetImage.size.width)
-//        let position6 = (self.size.width)/2 - 2*(bluePlanetImage.size.width)
-//        let arrayPositions = [position1, position2, 0, position3, position4, position5, position6]
-//        let randomArrayPosition = CGPoint(x: arrayPositions.randomElement()!, y:  self.size.height/2 + (bluePlanetImage.size.width)/4)
-        
         // Create planet node
         let planet  = SKSpriteNode()
         planet.name = "planet"
@@ -356,28 +346,16 @@ public class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if self.death == false{
             // Create timer to create planets with random interval
-            let wait = SKAction.wait(forDuration: 1.5, withRange: 1)
+            let wait = SKAction.wait(forDuration: 1, withRange: 1)
             let spawn = SKAction.run {
                 if self.death == false{
                     self.createPlanetNode()
                 }
             }
-            
             let sequence = SKAction.sequence([wait, spawn])
             self.run(SKAction.repeatForever(sequence))
-            
-            
-            //            self.enumerateChildNodes(withName: "planet") { (node, error) in
-            //                if node.position.y < -((self.scene?.size.height)!/2 + node.frame.size.height){
-            //                    node.removeFromParent()
-            //                } else {
-            //                    node.position.y -= 400.0
-            //                }
-            //            }
         }
-        
     }
-    
     
     public func showTextsSun(){
         
