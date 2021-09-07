@@ -203,7 +203,7 @@ public class GameScene: SKScene, SKPhysicsContactDelegate {
         self.planetsCountBackground.size = CGSize(width: 240, height: 100)
         self.planetsCountBackground.position = CGPoint(x: 0, y: (self.scene?.size.height)!/2 - self.planetsCountBackground.size.height/2)
         self.planetsCountBackground.texture = SKTexture(image: UIImage(named: "backgroundPlanetCount-36.png")!)
-        self.planetsCountBackground.zPosition = 10.0
+        self.planetsCountBackground.zPosition = 5
         self.planetsCountBackground.alpha = 1
         self.addChild(self.planetsCountBackground)
         
