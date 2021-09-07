@@ -316,29 +316,27 @@ public class GameScene: SKScene, SKPhysicsContactDelegate {
         let arrayPlanetImages = [bluePlanetImage, redPlanetImage, greenPlanetImage]
         let planetRandomTexture = SKTexture(image: arrayPlanetImages.randomElement()!)
         
-        //        // Random position
-        //        let maxLimit = self.size.width/2 - (bluePlanetImage.size.width)/2
-        //        let minLimit = -(self.size.width/2 + (bluePlanetImage.size.width)/2)
-        //        let randomX = CGFloat.random(in: minLimit ... maxLimit)
-        //        let randomPosition = CGPoint(x: randomX, y:  self.size.height/2 + (bluePlanetImage.size.width)/4)
-        //
-        //
+        // Random position
+        let maxLimit = self.size.width/2
+        let minLimit = -(self.size.width/2)
+        let randomX = CGFloat.random(in: minLimit ... maxLimit)
+        let randomPosition = CGPoint(x: randomX, y:  self.size.height/2 + (bluePlanetImage.size.width)/4)
         
         // Random position between possibilities
-        let position1 = -(self.size.width/2)
-        let position2 = -(self.size.width/2) + (bluePlanetImage.size.width)/2
-        let position3 = (self.size.width)/2 - (bluePlanetImage.size.width)/2
-        let position4 = (self.size.width)/2
-        let position5 = -(self.size.width/2) + 2*(bluePlanetImage.size.width)
-        let position6 = (self.size.width)/2 - 2*(bluePlanetImage.size.width)
-        let arrayPositions = [position1, position2, 0, position3, position4, position5, position6]
-        let randomArrayPosition = CGPoint(x: arrayPositions.randomElement()!, y:  self.size.height/2 + (bluePlanetImage.size.width)/4)
+//        let position1 = -(self.size.width/2)
+//        let position2 = -(self.size.width/2) + (bluePlanetImage.size.width)/2
+//        let position3 = (self.size.width)/2 - (bluePlanetImage.size.width)/2
+//        let position4 = (self.size.width)/2
+//        let position5 = -(self.size.width/2) + 2*(bluePlanetImage.size.width)
+//        let position6 = (self.size.width)/2 - 2*(bluePlanetImage.size.width)
+//        let arrayPositions = [position1, position2, 0, position3, position4, position5, position6]
+//        let randomArrayPosition = CGPoint(x: arrayPositions.randomElement()!, y:  self.size.height/2 + (bluePlanetImage.size.width)/4)
         
         // Create planet node
         let planet  = SKSpriteNode()
         planet.name = "planet"
         planet.size = CGSize(width: (bluePlanetImage.size.width)/4, height: (bluePlanetImage.size.height)/4)
-        planet.position = randomArrayPosition
+        planet.position = randomPosition
         planet.zPosition = 2.0
         planet.texture = planetRandomTexture
         
